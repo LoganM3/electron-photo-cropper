@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import Cropper from 'react-easy-crop';
 import { readFile } from '../../helpers/images';
 
 const Photo = () => {
   const [imageSrc, setImageSrc] = useState(null); //file data
-  const [filename, setFilename] = useState(null); //file adress
+  const [crop, setCrop] = useState({x: 0, y: 0})
+  const [zoom, setZoom] = useState(1)
+  // const [filename, setFilename] = useState(null); //file adress
   const handleFileChange = async(e: any) => {
     if (e.target.files && e.target.files.length) {
       //we got a file...
       const file = e.target.files[0];
       console.log(e.target.files[0]);
-      setFilename(file.path);
+      // setFilename(file.path);
       //get the image data from the file
       const imageData:any = await readFile(file)
       //setImageSrc to that image data
@@ -27,7 +30,13 @@ const Photo = () => {
   }
   return(
     <>
-    <img src={imageSrc}/>
+    <Cropper
+    image={imageSrc}
+    crop ={crop}
+    zoom ={zoom}
+    onCropChange = {setCrop}
+    onZoomChange = {setZoom}
+    />
     </>
   )
 };
